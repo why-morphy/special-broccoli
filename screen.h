@@ -1,3 +1,4 @@
+//#define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include <vector>
 
@@ -18,7 +19,8 @@ public:
 
     void pixel(float x, float y)
     {
-        points.emplace_back(x, y);
+        // points.emplace_back(x, y);
+        points.emplace_back(SDL_FPoint{ x, y });
     }
 
     void show()
