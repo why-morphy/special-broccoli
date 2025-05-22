@@ -2,9 +2,19 @@
 #include <numeric>
 #include <cmath>
 
+
+const int s = 2;
+
+
+
 struct vec3{
     float x, y, z;
 };
+
+struct connection{
+    int a, b;
+};
+
 
 void rotate(vec3& point, float x = 1, float y = 1, float z = 1 ){
     float rad = 0;
@@ -43,20 +53,68 @@ int main(int argv, char** args){
     // }
 
     std::vector<vec3> points {
-        {200, 200, 200},
-        {400, 200, 200},
-        {400, 400, 200},
-        {200, 200, 400},
-        {200, 400, 400},
-        {400, 200, 400},
-        {400, 400, 400},
-        {200, 400, 200}
+        {s*100, s*100, s*100},
+        {s*200, s*100, s*100},
+        {s*200, s*200, s*100},
+        {s*100, s*200, s*100},
+        {s*100, s*100, s*200},
+        {s*200, s*100, s*200},
+        {s*200, s*200, s*200},
+        {s*100, s*200, s*200}
+    };
+
+    std::vector<connection> connections {
+       {0,4},
+       {1,5},
+       {2,6},
+       {3,7},
+
+       {0,1},
+       {1,2},
+       {2,3},
+       {3,0},
+
+       {4,5},
+       {5,6},
+       {6,7},
+       {7,4}
+
     };
     
+    //Declaration of the centeroid and the follow-ups
+    vec3 c{25,25,25};
+    for(auto& point : points){
+        c.x += point.x;
+        c.y += point.y;
+        c.z += point.z;
+    }
 
+    c.x /= points.size();
+    c.y /= points.size();
+    c.z /= points.size();
+
+    //Rotation
     while(true){
+        for(auto& point : points){
+            point.x -= c.x;
+            point.y -= c.y;
+            point.z -= c.z;
+            rotate(point, 0.01, 0.01, 0.01);
+            point.x += c.x;
+            point.y += c.y;
+            point.z += c.z;
+        }
+        for(auto& point : points){
+            screen.pixel(point.x, point.y);
+        }
+
+        for(auto& connection : connections){
+            line(screen, points[connection.a].x, points[connection.a].y, points[connection.b].x, points[connection.b].y);
+        }
         screen.show();
+        screen.clear();
         screen.input();
+        SDL_Delay(10);
     }
 
     return 0;
