@@ -37,6 +37,11 @@ public:
         SDL_RenderPresent(renderer);
     }
 
+    void clear()
+    {
+        points.clear();
+    }
+    
     void input()
     {
         while (SDL_PollEvent(&event))
