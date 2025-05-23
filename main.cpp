@@ -1,11 +1,9 @@
 #include "screen.h"
 #include <numeric>
 #include <cmath>
-
+#include <iostream>
 
 const int s = 2;
-
-
 
 struct vec3{
     float x, y, z;
@@ -14,7 +12,6 @@ struct vec3{
 struct connection{
     int a, b;
 };
-
 
 void rotate(vec3& point, float x = 1, float y = 1, float z = 1 ){
     float rad = 0;
@@ -93,13 +90,17 @@ int main(int argv, char** args){
     c.y /= points.size();
     c.z /= points.size();
 
+    int lastMouseX = 0, lastMouseY = 0;
+    float rotX = 0.0f, rotY = 0.0f;
+
     //Rotation
     while(true){
+        
         for(auto& point : points){
             point.x -= c.x;
             point.y -= c.y;
             point.z -= c.z;
-            rotate(point, 0.01, 0.01, 0.01);
+            rotate(point,0.01,0.01 , 0.01);
             point.x += c.x;
             point.y += c.y;
             point.z += c.z;
@@ -115,6 +116,8 @@ int main(int argv, char** args){
         screen.clear();
         screen.input();
         SDL_Delay(10);
+
+        
     }
 
     return 0;
